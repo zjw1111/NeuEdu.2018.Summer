@@ -1,0 +1,2 @@
+<!-- activation_email.txt -->
+<!-- Should show username, site url, activation link, exiration days-->

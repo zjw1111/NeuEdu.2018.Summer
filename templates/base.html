@@ -1,0 +1,20 @@
+<!-- base.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>{% block title %}{% endblock %}</title>
+    {% load staticfiles %}
+    <link rel="stylesheet" href='{% static "bootstrap/css/bootstrap.min.css" %}'>
+    <link rel="stylesheet" href='{% static "bootstrap/css/bootstrap-theme.min.css" %}'>
+    <script src="{% static 'jquery/jquery-3.3.1.min.js' %}"></script>
+    <script src='{% static "bootstrap/js/bootstrap.min.js" %}'></script>
+    <style>h1,h2,h3,h4,h5,p,div {font-family:Arial;}</style>
+
+</head>
+<body>
+{% include 'header.html' %}
+{% block details %}{% endblock %}
+{% include 'footer.html' %}
+</body>
+</html>

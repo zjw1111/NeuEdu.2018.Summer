@@ -6,3 +6,24 @@
 <!-- should display a one-column title area, which should display the title Please login-->
 <!-- if already login, should display the user's diary at most 3 diaries per row -->
 <!-- should display the login form-->
+
+<!--TODO: Not Completed-->
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+
+{% block details %}
+<div class="container">
+    {% if not username %}
+    <form name='productinfo' action='/login' method='POST'>
+        {% csrf_token %}
+        {{ loginform.as_p }}
+        <input type="submit" value="Save" name="_save"/>
+    </form>
+    {% endif %}
+    {% for msg in messages %}
+    <div class="alert alert-{{msg.tags}}">{{ msg }}</div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}

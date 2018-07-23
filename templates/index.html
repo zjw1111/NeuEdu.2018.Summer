@@ -8,7 +8,29 @@
 <!-- should use bootstrap panel to show the details of each diary, which include the date, text, extra informations-->
 <!-- if not diary yet, display a message-->
 
+<!--TODO: Not Completed-->
 {% extends "base.html" %}
-{% block title %}test{% endblock %}
+{% block title %}Index{% endblock %}
 
-{% block details %}TTTTtest{% endblock %}
+{% block details %}
+<div class='container'>
+    {% for msg in messages %}
+    <div class="alert alert-{{msg.tags}}">{{ msg }}</div>
+    {% endfor %}
+    <div class='row'>
+        <div class='col-md-12'>
+            <div class='panel panel-default'>
+                <div class='panel-heading' align=center>
+                    {% if username %}
+                    <h2>{{ username }}的私人日记</h2>
+                    {% else %}
+                    <h2>我的私人日记</h2>
+                    <p>Not Login!</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

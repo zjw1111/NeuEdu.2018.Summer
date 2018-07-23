@@ -6,15 +6,20 @@ from django.template.loader import get_template
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect
 from django.contrib import messages
-from diaries import models, forms
+from diaries.models import *
+from diaries.forms import *
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 
+
 def index(request, pid=None, del_pass=None):
     template = get_template('index.html')
-    html = template.render(locals())
+    username = None
+    if request.user.is_authenticated():
+        username = request.user.username
+    html = template.render(locals(), request)
     return HttpResponse(html)
     #As the home page, should check the authenticaiton status first,
     #if already login then use the username query the diaries data.
@@ -32,6 +37,33 @@ def userinfo(request):
 
 def login(request):
     pass
+    template = get_template('login.html')
+    username = None
+    if request.user.is_authenticated():
+        # messages.add_message(request, messages.INFO, 'Welcome %s' % request.user.username)
+        username = request.user.username
+        return HttpResponseRedirect('/')
+    else:
+        if request.method == 'GET':
+            loginform = LoginForm()
+        else:
+            loginform = LoginForm(request.POST)
+            if loginform.is_valid():
+                username = auth.authenticate(request, username=loginform.cleaned_data['username'],
+                                             password=loginform.cleaned_data['password'])
+                if username and username.is_active:
+                    messages.add_message(request, messages.INFO, 'Welcome %s' % username)
+                    auth.login(request, username)
+                    return HttpResponseRedirect('/')
+                else:
+                    username = None
+                    messages.add_message(request, messages.WARNING, 'Please check your login id/password')
+            else:
+                username = None
+                messages.add_message(request, messages.WARNING, 'Please check your login id/password')
+    msg = messages
+    html = template.render(locals(), request)
+    return HttpResponse(html)
     #should check the authenticaiton status first,if already login, redirect to home page.
     #if the form submit, check the validity of form data, if valid, use the username and password to perform
     # authentication. if the user is not valid or not been activated, then display the respective message.
@@ -40,6 +72,9 @@ def login(request):
 
 def logout(request):
     pass
+    auth.logout(request)
+    messages.add_message(request, messages.INFO, 'You have logout.ed!')
+    return HttpResponseRedirect('/')
     #logout current user.
     #Display the logout message.
     #redirect to home page.

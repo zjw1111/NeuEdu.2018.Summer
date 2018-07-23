@@ -21,6 +21,11 @@ urlpatterns = [
     #TODO: Please add the homepage,userinfo page,posting page,login page,logout page here.
     #TODO: Please add captcha,registration back end here.
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^(index|)$', index),
+    # TODO: Use this way will increase an additional param <'index' or ''>
+    # url(r'^(index|)$', index),
+    url(r'^index$', index),
+    url(r'^$', index),
+    url(r'^login$', login),
+    url(r'^logout$', logout),
 
 ]

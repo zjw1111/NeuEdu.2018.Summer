@@ -9,8 +9,9 @@ from django.contrib.auth.models import User
 # TODO: Please design the extra user profile registration form.
 # TODO: The extra user profile data will include height, gender, personal page url.
 class ProfileForm(forms.Form):
-    gender = forms.ChoiceField(label='性别', choices=[(0, '女'), (1, '男')])
+    gender = forms.ChoiceField(label='性别', choices=[(0, '男'), (1, '女')], widget=forms.RadioSelect())
     height = forms.FloatField(label="身高(cm)", min_value=0)
+    # gender = forms.RadioSelect(choices=[(0, '女'), (1, '男')])
     personal_page_url = forms.CharField(label='个人主页', max_length=20)
 
     def as_table(self):

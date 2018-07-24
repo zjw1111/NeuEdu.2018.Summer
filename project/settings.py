@@ -64,6 +64,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'project.urls'
 LOGIN_URL = '/login'
+AUTH_USER_MODEL = "diaries.UserInfo"
 
 TEMPLATES = [
     {

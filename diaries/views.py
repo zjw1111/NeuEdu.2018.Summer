@@ -28,13 +28,10 @@ def index(request, pid=None, del_pass=None):
 def userinfo(request):
     template = get_template('userinfo.html')
     username = request.user.username
-    if UserInfo.objects.filter(username=username).exists():
-        user = UserInfo.objects.get(username=username)
-        gender = user.gender
-        height = user.height
-        personal_page_url = user.personal_page_url
-    else:
-        UserInfo.objects.create(user_ptr_id=request.user.id, gender=1, height=0, personal_page_url="")
+    user = UserInfo.objects.get(id=request.user.id)
+    gender = user.gender
+    height = user.height
+    personal_page_url = user.personal_page_url
 
     if request.method == 'GET':
         if 'modify' in request.GET and request.GET['modify'] == '1':
@@ -42,17 +39,13 @@ def userinfo(request):
     else:
         profile_form = ProfileForm(request.POST)
         if profile_form.is_valid():
-            # username = auth.authenticate(request, username=loginform.cleaned_data['username'],
-            #                              password=loginform.cleaned_data['password'])
-            # if username and username.is_active:
-            #     messages.add_message(request, messages.SUCCESS, '登录成功！%s，你好' % username)
-            # else:
-            #     username = None
-            #     messages.add_message(request, messages.WARNING, '请检查你的用户名、密码')
-            profile_form.save()
+            user.gender = profile_form.cleaned_data['gender']
+            user.height = profile_form.cleaned_data['height']
+            user.personal_page_url = profile_form.cleaned_data['personal_page_url']
+            user.save()
+            return HttpResponseRedirect('/userinfo')
         else:
-            # username = None
-            messages.add_message(request, messages.WARNING, '2请检查你的用户名、密码')
+            messages.add_message(request, messages.WARNING, '请检查您刚才输入的信息')
     html = template.render(locals(), request)
     return HttpResponse(html)
     #should check the authenticaiton status first,

@@ -3,3 +3,19 @@
 <!-- Should implement the title block -->
 <!-- Should implement content block which display the message with respective message level style-->
 <!-- Should show a activation fail reminder text, it will be good to user bootstrap panel-->
+
+{% extends "base.html" %}
+{% block title %}激活失败{% endblock %}
+{% block details %}
+<div class='container'>
+    <div class='row'>
+        <div class='col-md-12'>
+            <div class='panel panel-warning'>
+                <div class='panel-heading' align=center>
+                    <h2>激活失败，请确认您的链接是否不完整或已经失效</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

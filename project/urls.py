@@ -18,8 +18,7 @@ from django.contrib import admin
 from diaries.views import *
 
 urlpatterns = [
-    #TODO: Please add the homepage,userinfo page,posting page,login page,logout page here.
-    #TODO: Please add captcha,registration back end here.
+    # TODO: Please add captcha,registration back end here.
     url(r'^admin/', include(admin.site.urls)),
     # TODO: Use this way will increase an additional param <'index' or ''>
     # url(r'^(index|)$', index),
@@ -27,5 +26,8 @@ urlpatterns = [
     url(r'^$', index),
     url(r'^login$', login),
     url(r'^logout$', logout),
+    url(r'^userinfo$', userinfo),
+    url(r'^post$', posting),
+    url(r'^accounts/', include('registration.backends.hmac.urls')),
 
 ]

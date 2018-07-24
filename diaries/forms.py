@@ -11,11 +11,41 @@ from django.contrib.auth.models import User
 
 #TODO: Please design the login form.
 class LoginForm(forms.Form):
-    username = forms.CharField(label='User name', max_length=20)
-    password = forms.CharField(label='Password', max_length=20, widget=forms.PasswordInput())
-
+    username = forms.CharField(label='用户名', max_length=20)
+    password = forms.CharField(label='密　码', max_length=20, widget=forms.PasswordInput())
 
 
 #TODO: Please design a date selection widget which might be a child class of forms.DateInput
+class DateWidget(forms.DateInput):
+    input_type = 'date'
+
 
 #TODO: Please design the diary addition form, which should include budget, weight, note, date
+class NewDiaryForm(forms.ModelForm):
+    # captcha = CaptchaField()
+
+    class Meta:
+        model = Diary
+        fields = ['note', 'budget', 'weight', 'date']
+
+    def __init__(self, *args, **argv):
+        forms.ModelForm.__init__(self, *args, **argv)
+        self.fields['note'].label = '日记文本:'
+        self.fields['budget'].label = '预算:'
+        self.fields['budget'].min_value = 0
+        self.fields['weight'].label = '体重:'
+        self.fields['date'].label = '日期:'
+        self.fields['date'].widget = DateWidget()
+        # self.fields['captcha'].label = '请输入图形中文字'
+
+    def as_p(self):
+        """
+        Override the parent method, to make the HTML beautiful
+        Returns this form rendered as HTML <p>s.
+        """
+        return self._html_output(
+            normal_row='<p%(html_class_attr)s>%(label)s<br/>%(field)s%(help_text)s</p>',
+            error_row='%s',
+            row_ender='</p>',
+            help_text_html=' <span class="helptext">%s</span>',
+            errors_on_separate_row=True)

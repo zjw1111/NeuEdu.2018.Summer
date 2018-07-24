@@ -3,3 +3,19 @@
 <!-- Should implement the title block -->
 <!-- Should implement content block which display the message with respective message level style-->
 <!-- Should show a registration success reminder text, it will be good to user bootstrap panel-->
+
+{% extends "base.html" %}
+{% block title %}注册成功{% endblock %}
+{% block details %}
+<div class='container'>
+    <div class='row'>
+        <div class='col-md-12'>
+            <div class='panel panel-info'>
+                <div class='panel-heading' align=center>
+                    <h2>注册成功，请去邮箱验证激活邮件！</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

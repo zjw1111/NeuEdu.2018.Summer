@@ -4,3 +4,22 @@
 <!-- should implement content block-->
 <!-- should display the message with respective message level-->
 <!-- should display the diary input form-->
+{% extends "base.html" %}
+{% block title %}
+写新的日记
+{% endblock %}
+{% block details %}
+{% load staticfiles %}
+<div class="container">
+    {% if not errormsg %}
+    <form name='productinfo' action='/post' method="post">
+        {% csrf_token %}
+        {{ diary_form.as_p }}
+        <input type="datetime-local">
+        <input type="submit" value="Save" name="_save"/>
+    </form>
+    {% else %}
+    {{ errormsg }}
+    {% endif %}
+</div>
+{% endblock %}

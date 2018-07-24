@@ -17,11 +17,12 @@
     <form name='productinfo' action='/login' method='POST'>
         {% csrf_token %}
         {{ loginform.as_p }}
-        <input type="submit" value="Save" name="_save"/>
+        <input type="hidden" name="next" value="{{ next }}"/>
+        <input type="submit" value="登录" name="_Login"/>
     </form>
     {% endif %}
     {% for msg in messages %}
-    <div class="alert alert-{{msg.tags}}">{{ msg }}</div>
+    <div class="alert alert-{{msg.tags}}" style="margin-top: 20px;">{{ msg }}</div>
     {% endfor %}
 </div>
 

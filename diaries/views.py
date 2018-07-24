@@ -25,7 +25,8 @@ def index(request, pid=None, del_pass=None):
     #if already login then use the username query the diaries data.
     #check the message instance, if any, show it.
 
-#user function decorator login_required to check whether or not it already login, if not, redirect to login page
+
+@login_required
 def userinfo(request):
     pass
     #should check the authenticaiton status first,
@@ -36,16 +37,19 @@ def userinfo(request):
 
 
 def login(request):
-    pass
     template = get_template('login.html')
     username = None
+    next = ""
     if request.user.is_authenticated():
-        # messages.add_message(request, messages.INFO, 'Welcome %s' % request.user.username)
         username = request.user.username
         return HttpResponseRedirect('/')
     else:
         if request.method == 'GET':
             loginform = LoginForm()
+            if 'next' in request.GET:
+                next = request.GET['next']
+            else:
+                next = '/'
         else:
             loginform = LoginForm(request.POST)
             if loginform.is_valid():
@@ -54,34 +58,57 @@ def login(request):
                 if username and username.is_active:
                     messages.add_message(request, messages.INFO, 'Welcome %s' % username)
                     auth.login(request, username)
-                    return HttpResponseRedirect('/')
+                    if 'next' in request.POST:
+                        return HttpResponseRedirect(request.POST['next'])
+                    else:
+                        return HttpResponseRedirect('/')
                 else:
                     username = None
                     messages.add_message(request, messages.WARNING, 'Please check your login id/password')
             else:
                 username = None
                 messages.add_message(request, messages.WARNING, 'Please check your login id/password')
-    msg = messages
     html = template.render(locals(), request)
     return HttpResponse(html)
-    #should check the authenticaiton status first,if already login, redirect to home page.
-    #if the form submit, check the validity of form data, if valid, use the username and password to perform
-    # authentication. if the user is not valid or not been activated, then display the respective message.
-    #if the user is valid, then login and display the success message.
-    #if current access is the first time show page, then display the login form.
+
 
 def logout(request):
     pass
     auth.logout(request)
-    messages.add_message(request, messages.INFO, 'You have logout.ed!')
+    messages.add_message(request, messages.INFO, '您已注销，欢迎再次登录!')
     return HttpResponseRedirect('/')
-    #logout current user.
-    #Display the logout message.
-    #redirect to home page.
 
-#user function decorator login_required to check whether or not it already login, if not, redirect to login page
+
+@login_required
 def posting(request):
     pass
+    template = get_template('posting.html')
+    username = None
+    if request.user.is_authenticated():
+        username = request.user.username
+    if request.method == 'GET':
+        diary_form = NewDiaryForm()
+    else:
+        diary_form = NewDiaryForm(request.POST)
+        if diary_form.is_valid():
+            username = auth.authenticate(request, username=diary_form.cleaned_data['username'],
+                                         password=diary_form.cleaned_data['password'])
+            if username and username.is_active:
+                messages.add_message(request, messages.INFO, 'Welcome %s' % username)
+                auth.login(request, username)
+                if 'next' in request.POST:
+                    return HttpResponseRedirect(request.POST['next'])
+                else:
+                    return HttpResponseRedirect('/')
+            else:
+                username = None
+                messages.add_message(request, messages.WARNING, 'Please check your login id/password')
+        else:
+            username = None
+            messages.add_message(request, messages.WARNING, 'Please check your login id/password')
+    html = template.render(locals(), request)
+    diary_form
+    return HttpResponse(html)
     #should check the authenticaiton status first,if already login, get the username.
     #should display the message contents if any.
     # if the form submit, check the validity of form data, if valid, save the diary data and show success message.

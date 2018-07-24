@@ -4,3 +4,26 @@
 <!-- Should implement content block which display the message with respective message level style-->
 <!-- Should use the bootstrap grid system to show a 1 row heading message-->
 <!-- use a post form to show the registration page-->
+
+{% extends "base.html" %}
+{% block title %}注册账号{% endblock %}
+{% block details %}
+<div class='container'>
+    {% for message in messages %}
+    <div class='alert alert-{{message.tags}}'>{{ message }}</div>
+    {% endfor %}
+    <div class='row'>
+        <div class='col-md-12'>
+            <div class='panel panel-default'>
+                <div class='panel-heading' align=center>
+                    <h3>注册您的账号</h3></div>
+            </div>
+            <form action='.' method='POST'>
+                {% csrf_token %}
+                <table>{{ form.as_table }}</table>
+                <input type='submit' value='注册'><br/>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

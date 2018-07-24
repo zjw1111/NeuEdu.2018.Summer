@@ -6,7 +6,7 @@ from django.contrib.auth.models import User, AbstractUser
 #TODO: Please design the extra user profile data model which should be a extension of Django standard user profile, the extra data should include height, gender, personal page url.
 class UserInfo(User):
     height = models.FloatField(verbose_name="身高", null=True)
-    gender = models.IntegerField(choices=[(0, 'Woman'), (1, 'Man')], default=0, verbose_name="性别", null=True)
+    gender = models.IntegerField(choices=[(0, '女'), (1, '男')], default=0, verbose_name="性别", null=True)
     personal_page_url = models.URLField(max_length=200, verbose_name="个人主页", null=True)
 
 

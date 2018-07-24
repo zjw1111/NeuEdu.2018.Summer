@@ -25,35 +25,55 @@
             </div>
         </div>
     </div>
-    <div class="col-md-5">
-    <table class="table table-hover">
-        <tr>
-            <th>username</th>
-            <td>{{username}}</td>
-        </tr>
-        <tr>
-            <th>gender</th>
-            <td>{{gender}}</td>
-        </tr>
-        <tr>
-            <th>height</th>
-            <td>{{height}}</td>
-        </tr>
-        <tr>
-            <th>personal_page_url</th>
-            <td>{{personal_page_url}}</td>
-        </tr>
-    </table>
+    <div class="row">
+        <div class="col-md-6">
+            <form action='/userinfo' method="post">
+                <table class="table table-hover">
+                    <tr height="45px">
+                        <th width="40%">用户名:</th>
+                        <td>{{username}}</td>
+                    </tr>
+                    {% if not profile_form %}
+                    <tr height="45px">
+                        <th>性别:</th>
+                        <td>{% if gender == 1 %}男{% else %}女{% endif %}</td>
+                    </tr>
+                    <tr height="45px">
+                        <th>身高(cm):</th>
+                        <td>{{height}}</td>
+                    </tr>
+                    <tr height="45px">
+                        <th>个人主页:</th>
+                        <td>{{personal_page_url}}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button type="button" class="btn btn-primary" id="modify">修改资料</button>
+                        </td>
+                        <td></td>
+                    </tr>
+                    {% else %}
+                    {% csrf_token %}
+                    {{ profile_form.as_table }}
+                    <input type="hidden" name="user" value="{{ user }}"/>
+                    <td><input class="btn btn-primary" type="submit" value="提交" name="_submit"/></td>
+                    <td></td>
+                    {% endif %}
+
+                </table>
+            </form>
+        </div>
     </div>
-    <p>{{username}}</p>
-    <p>{{gender}}</p>
-    <p>{{height}}</p>
-    <p>{{personal_page_url}}</p>
-    <form name='productinfo' action='/userinfo' method="post">
-        {% csrf_token %}
-        {{ diary_form.as_p }}
-        <input type="hidden" name="user" value="{{ user }}"/>
-        <input type="submit" value="提交" name="_submit"/>
-    </form>
 </div>
+<script>
+    $(function() {
+        $("#modify").click(function(){
+            window.location.href='?modify=1'
+        });
+    });
+
+
+
+
+</script>
 {% endblock %}

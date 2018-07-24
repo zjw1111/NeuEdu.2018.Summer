@@ -1,4 +1,4 @@
-#_*_ encoding: utf-8 *_*
+# _*_ encoding: utf-8 *_*
 from django import forms
 from diaries.models import *
 from captcha.fields import CaptchaField
@@ -6,24 +6,38 @@ from registration.forms import RegistrationForm
 from django.contrib.auth.models import User
 
 
-#TODO: Please design the extra user profile registration form.
-#TODO: The extra user profile data will include height, gender, personal page url.
+# TODO: Please design the extra user profile registration form.
+# TODO: The extra user profile data will include height, gender, personal page url.
 class ProfileForm(forms.Form):
-    pass
+    gender = forms.ChoiceField(label='性别', choices=[(0, '女'), (1, '男')])
+    height = forms.FloatField(label="身高(cm)", min_value=0)
+    personal_page_url = forms.CharField(label='个人主页', max_length=20)
+
+    def as_table(self):
+        """
+        Override the parent method, to make the HTML beautiful
+        Returns this form rendered as HTML <tr>s -- excluding the <table></table>.
+        """
+        return self._html_output(
+            normal_row='<tr%(html_class_attr)s height="45px"><th>%(label)s</th><td>%(errors)s%(field)s%(help_text)s</td></tr>',
+            error_row='<tr><td colspan="2">%s</td></tr>',
+            row_ender='</td></tr>',
+            help_text_html='<br /><span class="helptext">%s</span>',
+            errors_on_separate_row=False)
 
 
-#TODO: Please design the login form.
+# TODO: Please design the login form.
 class LoginForm(forms.Form):
     username = forms.CharField(label='用户名', max_length=20)
     password = forms.CharField(label='密　码', max_length=20, widget=forms.PasswordInput())
 
 
-#TODO: Please design a date selection widget which might be a child class of forms.DateInput
+# TODO: Please design a date selection widget which might be a child class of forms.DateInput
 class DateWidget(forms.DateInput):
     input_type = 'date'
 
 
-#TODO: Please design the diary addition form, which should include budget, weight, note, date
+# TODO: Please design the diary addition form, which should include budget, weight, note, date
 class NewDiaryForm(forms.ModelForm):
     # captcha = CaptchaField()
 

@@ -22,20 +22,37 @@ def index(request, pid=None, del_pass=None):
         diaries = Diary.objects.filter(user=request.user).order_by('date')
     html = template.render(locals(), request)
     return HttpResponse(html)
-    #As the home page, should check the authenticaiton status first,
-    #if already login then use the username query the diaries data.
-    #check the message instance, if any, show it.
 
 
 @login_required
 def userinfo(request):
-    pass
     template = get_template('userinfo.html')
     username = request.user.username
-    user = UserInfo.objects.get(username=username)
-    gender = user.gender
-    height = user.height
-    personal_page_url = user.personal_page_url
+    if UserInfo.objects.filter(username=username).exists():
+        user = UserInfo.objects.get(username=username)
+        gender = user.gender
+        height = user.height
+        personal_page_url = user.personal_page_url
+    else:
+        UserInfo.objects.create(user_ptr_id=request.user.id, gender=1, height=0, personal_page_url="")
+
+    if request.method == 'GET':
+        if 'modify' in request.GET and request.GET['modify'] == '1':
+            profile_form = ProfileForm()
+    else:
+        profile_form = ProfileForm(request.POST)
+        if profile_form.is_valid():
+            # username = auth.authenticate(request, username=loginform.cleaned_data['username'],
+            #                              password=loginform.cleaned_data['password'])
+            # if username and username.is_active:
+            #     messages.add_message(request, messages.SUCCESS, '登录成功！%s，你好' % username)
+            # else:
+            #     username = None
+            #     messages.add_message(request, messages.WARNING, '请检查你的用户名、密码')
+            profile_form.save()
+        else:
+            # username = None
+            messages.add_message(request, messages.WARNING, '2请检查你的用户名、密码')
     html = template.render(locals(), request)
     return HttpResponse(html)
     #should check the authenticaiton status first,
@@ -82,7 +99,6 @@ def login(request):
 
 
 def logout(request):
-    pass
     auth.logout(request)
     messages.add_message(request, messages.INFO, '您已注销，欢迎再次登录!')
     return HttpResponseRedirect('/')
@@ -90,7 +106,6 @@ def logout(request):
 
 @login_required
 def posting(request):
-    pass
     template = get_template('posting.html')
     username = None
     user = None

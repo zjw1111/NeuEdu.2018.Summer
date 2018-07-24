@@ -6,3 +6,54 @@
 <!-- should display a one-column title area, which should display the title XXX's information-->
 <!-- should display a one-column user profile data area, including username, and extra profile data-->
 <!-- should display the extra user profile data input form so that user could modify them-->
+
+{% extends "base.html" %}
+{% block title %}个人资料{% endblock %}
+
+{% block details %}
+{% load staticfiles %}
+<div class="container">
+    {% for msg in messages %}
+    <div class="alert alert-{{msg.tags}}">{{ msg }}</div>
+    {% endfor %}
+    <div class='row'>
+        <div class='col-md-12'>
+            <div class='panel panel-default'>
+                <div class='panel-heading' align=center>
+                    <h3>{{ username }}的个人资料</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-5">
+    <table class="table table-hover">
+        <tr>
+            <th>username</th>
+            <td>{{username}}</td>
+        </tr>
+        <tr>
+            <th>gender</th>
+            <td>{{gender}}</td>
+        </tr>
+        <tr>
+            <th>height</th>
+            <td>{{height}}</td>
+        </tr>
+        <tr>
+            <th>personal_page_url</th>
+            <td>{{personal_page_url}}</td>
+        </tr>
+    </table>
+    </div>
+    <p>{{username}}</p>
+    <p>{{gender}}</p>
+    <p>{{height}}</p>
+    <p>{{personal_page_url}}</p>
+    <form name='productinfo' action='/userinfo' method="post">
+        {% csrf_token %}
+        {{ diary_form.as_p }}
+        <input type="hidden" name="user" value="{{ user }}"/>
+        <input type="submit" value="提交" name="_submit"/>
+    </form>
+</div>
+{% endblock %}

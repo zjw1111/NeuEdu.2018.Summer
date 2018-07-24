@@ -5,8 +5,11 @@ from captcha.fields import CaptchaField
 from registration.forms import RegistrationForm
 from django.contrib.auth.models import User
 
+
 #TODO: Please design the extra user profile registration form.
 #TODO: The extra user profile data will include height, gender, personal page url.
+class ProfileForm(forms.Form):
+    pass
 
 
 #TODO: Please design the login form.
@@ -26,16 +29,18 @@ class NewDiaryForm(forms.ModelForm):
 
     class Meta:
         model = Diary
-        fields = ['note', 'budget', 'weight', 'date']
+        fields = ['note', 'budget', 'weight', 'date', 'user']
 
     def __init__(self, *args, **argv):
         forms.ModelForm.__init__(self, *args, **argv)
         self.fields['note'].label = '日记文本:'
         self.fields['budget'].label = '预算:'
-        self.fields['budget'].min_value = 0
         self.fields['weight'].label = '体重:'
         self.fields['date'].label = '日期:'
+        self.fields['budget'].widget = forms.NumberInput(attrs={'min': 0, 'step': '0.1'})
+        self.fields['weight'].widget = forms.NumberInput(attrs={'min': 0, 'step': '0.1'})
         self.fields['date'].widget = DateWidget()
+        self.fields['user'].widget = forms.HiddenInput()
         # self.fields['captcha'].label = '请输入图形中文字'
 
     def as_p(self):

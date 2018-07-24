@@ -19,6 +19,7 @@ def index(request, pid=None, del_pass=None):
     username = None
     if request.user.is_authenticated():
         username = request.user.username
+        diaries = Diary.objects.filter(user=request.user).order_by('date')
     html = template.render(locals(), request)
     return HttpResponse(html)
     #As the home page, should check the authenticaiton status first,
@@ -29,6 +30,14 @@ def index(request, pid=None, del_pass=None):
 @login_required
 def userinfo(request):
     pass
+    template = get_template('userinfo.html')
+    username = request.user.username
+    user = UserInfo.objects.get(username=username)
+    gender = user.gender
+    height = user.height
+    personal_page_url = user.personal_page_url
+    html = template.render(locals(), request)
+    return HttpResponse(html)
     #should check the authenticaiton status first,
     #if already login then use the username query the profile data.
     #if the form submit, check the validity of form data, if valid, save data and show success information.
@@ -56,7 +65,7 @@ def login(request):
                 username = auth.authenticate(request, username=loginform.cleaned_data['username'],
                                              password=loginform.cleaned_data['password'])
                 if username and username.is_active:
-                    messages.add_message(request, messages.INFO, 'Welcome %s' % username)
+                    messages.add_message(request, messages.SUCCESS, '登录成功！%s，你好' % username)
                     auth.login(request, username)
                     if 'next' in request.POST:
                         return HttpResponseRedirect(request.POST['next'])
@@ -64,10 +73,10 @@ def login(request):
                         return HttpResponseRedirect('/')
                 else:
                     username = None
-                    messages.add_message(request, messages.WARNING, 'Please check your login id/password')
+                    messages.add_message(request, messages.WARNING, '请检查你的用户名、密码')
             else:
                 username = None
-                messages.add_message(request, messages.WARNING, 'Please check your login id/password')
+                messages.add_message(request, messages.WARNING, '请检查你的用户名、密码')
     html = template.render(locals(), request)
     return HttpResponse(html)
 
@@ -84,34 +93,22 @@ def posting(request):
     pass
     template = get_template('posting.html')
     username = None
-    if request.user.is_authenticated():
-        username = request.user.username
+    user = None
     if request.method == 'GET':
         diary_form = NewDiaryForm()
+        user = request.user.id
     else:
         diary_form = NewDiaryForm(request.POST)
         if diary_form.is_valid():
-            username = auth.authenticate(request, username=diary_form.cleaned_data['username'],
-                                         password=diary_form.cleaned_data['password'])
-            if username and username.is_active:
-                messages.add_message(request, messages.INFO, 'Welcome %s' % username)
-                auth.login(request, username)
-                if 'next' in request.POST:
-                    return HttpResponseRedirect(request.POST['next'])
-                else:
-                    return HttpResponseRedirect('/')
-            else:
-                username = None
-                messages.add_message(request, messages.WARNING, 'Please check your login id/password')
+            diary_form.save()
+            messages.add_message(request, messages.INFO, '新的日记提交成功！')
+            return HttpResponseRedirect('/')
         else:
-            username = None
-            messages.add_message(request, messages.WARNING, 'Please check your login id/password')
+            messages.add_message(request, messages.WARNING, '日记提交失败，请检查')
     html = template.render(locals(), request)
-    diary_form
     return HttpResponse(html)
-    #should check the authenticaiton status first,if already login, get the username.
-    #should display the message contents if any.
+    # should check the authenticaiton status first,if already login, get the username.
+    # should display the message contents if any.
     # if the form submit, check the validity of form data, if valid, save the diary data and show success message.
-    #Tips: should user the instance key parameter which specify the diary data model instance otherwise you cannot
-    #save data.
-    #if current access is the first time show page, then display the login form, and show a reminder message.
+    # Tips: should user the instance key parameter which specify the diary data model instance otherwise you cannot save data.
+    # if current access is the first time show page, then display the login form, and show a reminder message.

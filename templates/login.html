@@ -4,17 +4,24 @@
 <!-- should implement content block-->
 <!-- should display the message with respective message level-->
 <!-- should display a one-column title area, which should display the title Please login-->
-<!-- if already login, should display the user's diary at most 3 diaries per row -->
-<!-- should display the login form-->
+<!-- if already login, should display the login form -->
 
-<!--TODO: Not Completed-->
 {% extends "base.html" %}
-{% block title %}Login{% endblock %}
+{% block title %}登录{% endblock %}
 
 {% block details %}
 <div class="container">
+    <div class='row'>
+        <div class='col-md-12'>
+            <div class='panel panel-default'>
+                <div class='panel-heading' align=center>
+                    <h3>登录我的私人日记</h3>
+                </div>
+            </div>
+        </div>
+    </div>
     {% if not username %}
-    <form name='productinfo' action='/login' method='POST'>
+    <form name='login' action='/login' method='POST'>
         {% csrf_token %}
         {{ loginform.as_p }}
         <input type="hidden" name="next" value="{{ next }}"/>

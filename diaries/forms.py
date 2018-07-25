@@ -37,7 +37,7 @@ class MyCustomUserForm(RegistrationForm):
 class ProfileForm(forms.Form):
     gender = forms.ChoiceField(label='性别', choices=[(0, '男'), (1, '女')])
     height = forms.FloatField(label="身高(cm)", min_value=0)
-    personal_page_url = forms.CharField(label='个人主页', max_length=20)
+    personal_page_url = forms.URLField(label='个人主页', max_length=300)
 
     def as_table(self):
         """

@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from diaries.views import *
+from registration.backends.hmac.views import RegistrationView
 
 urlpatterns = [
     # TODO: Please add captcha,registration back end here.
@@ -28,6 +29,13 @@ urlpatterns = [
     url(r'^logout$', logout),
     url(r'^userinfo$', userinfo),
     url(r'^post$', posting),
+    url(r'^accounts/register/$',
+        RegistrationView.as_view(
+            form_class=MyCustomUserForm
+        ),
+        name='registration_register',
+        ),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
+    url(r'^captcha/', include('captcha.urls')),
 
 ]

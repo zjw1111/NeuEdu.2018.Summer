@@ -14,7 +14,7 @@ from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 
 
-def index(request, pid=None, del_pass=None):
+def index(request):
     template = get_template('index.html')
     username = None
     if request.user.is_authenticated():

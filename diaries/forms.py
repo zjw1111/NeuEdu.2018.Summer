@@ -1,37 +1,6 @@
 # _*_ encoding: utf-8 *_*
 from django import forms
 from diaries.models import *
-from captcha.fields import CaptchaField
-from registration.forms import RegistrationForm
-from django.contrib.auth.models import User
-
-
-class MyCustomUserForm(RegistrationForm):
-    captcha = CaptchaField()
-
-    class Meta:
-        model = UserInfo
-        fields = ['username', 'email', 'password1', 'password2', 'gender', 'height', 'personal_page_url', 'captcha']
-
-    def __init__(self, *args, **argv):
-        RegistrationForm.__init__(self, *args, **argv)
-        self.fields['username'].label = '* 用户名:'
-        self.fields['email'].label = '* Email:'
-        self.fields['password1'].label = '* 密码:'
-        self.fields['password2'].label = '* 密码确认:'
-        self.fields['captcha'].label = '* 验证码:'
-
-    def as_table(self):
-        """
-        Override the parent method, to make the HTML beautiful
-        Returns this form rendered as HTML <tr>s -- excluding the <table></table>.
-        """
-        return self._html_output(
-            normal_row='<tr%(html_class_attr)s"><th>%(label)s</th><td>%(field)s%(help_text)s%(errors)s</td></tr>',
-            error_row='<tr><td colspan="2">%s</td></tr>',
-            row_ender='</td></tr>',
-            help_text_html='<br /><span class="helptext">%s</span>',
-            errors_on_separate_row=False)
 
 
 class ProfileForm(forms.Form):

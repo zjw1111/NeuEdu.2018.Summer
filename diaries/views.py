@@ -1,15 +1,8 @@
 # _*_ encoding:utf-8 _*_
-from django.core.mail import EmailMessage
-from django.template import RequestContext
-from django.template import Context, Template
 from django.template.loader import get_template
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import redirect
 from django.contrib import messages
-from diaries.models import *
 from diaries.forms import *
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
 
@@ -28,10 +21,19 @@ def index(request):
 def userinfo(request):
     template = get_template('userinfo.html')
     username = request.user.username
-    user = UserInfo.objects.get(id=request.user.id)
-    gender = user.gender
-    height = user.height
-    personal_page_url = user.personal_page_url
+    UserInfoFlag = False
+
+    if not UserInfo.objects.filter(user_id=request.user.id).exists():
+        gender = 0
+        height = 0
+        personal_page_url = None
+    else:
+        user = UserInfo.objects.get(user_id=request.user.id)
+        gender = user.gender
+        height = user.height
+        personal_page_url = user.personal_page_url
+        UserInfoFlag = True
+
 
     if request.method == 'GET':
         if 'modify' in request.GET and request.GET['modify'] == '1':
@@ -39,10 +41,13 @@ def userinfo(request):
     else:
         profile_form = ProfileForm(request.POST)
         if profile_form.is_valid():
-            user.gender = profile_form.cleaned_data['gender']
-            user.height = profile_form.cleaned_data['height']
-            user.personal_page_url = profile_form.cleaned_data['personal_page_url']
-            user.save()
+            gender = profile_form.cleaned_data['gender']
+            height = profile_form.cleaned_data['height']
+            personal_page_url = profile_form.cleaned_data['personal_page_url']
+            if UserInfoFlag:
+                UserInfo.objects.filter(user_id=request.user.id).update(height=height, gender=gender, personal_page_url=personal_page_url)
+            else:
+                UserInfo.objects.create(user_id=request.user.id, height=height, gender=gender,personal_page_url=personal_page_url)
             messages.add_message(request, messages.SUCCESS, '个人资料修改成功')
             return HttpResponseRedirect('/userinfo')
         else:

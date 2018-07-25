@@ -46,10 +46,10 @@ INSTALLED_APPS = [
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.exmail.qq.com'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = '******(email-id)'
-EMAIL_HOST_PASSWORD = '******(email-password)'
+EMAIL_HOST_USER = 'admin@zjw1.top'
+EMAIL_HOST_PASSWORD = 'ZJWzjw980703'
 EMAIL_USE_SSL = True
-DEFAULT_FROM_EMAIL = '******(email-id)'
+DEFAULT_FROM_EMAIL = 'admin@zjw1.top'
 ACCOUNT_ACTIVATION_DAYS = 7
 
 MIDDLEWARE = [
@@ -64,7 +64,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'project.urls'
 LOGIN_URL = '/login'
-AUTH_USER_MODEL = "diaries.UserInfo"
+# AUTH_USER_MODEL = "diaries.UserInfo"
 
 TEMPLATES = [
     {

@@ -26,12 +26,6 @@ urlpatterns = [
     url(r'^logout$', logout),
     url(r'^userinfo$', userinfo),
     url(r'^post$', posting),
-    url(r'^accounts/register/$',
-        RegistrationView.as_view(
-            form_class=MyCustomUserForm
-        ),
-        name='registration_register',
-        ),
     url(r'^accounts/', include('registration.backends.hmac.urls')),
     url(r'^captcha/', include('captcha.urls')),
 

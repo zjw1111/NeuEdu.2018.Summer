@@ -10,7 +10,7 @@ class DiaryAdmin(admin.ModelAdmin):
 
 class UserInfoAdmin(admin.ModelAdmin):
     list_display = ('username', 'height', 'gender', 'personal_page_url')
-    fields = ('username', 'first_name', 'last_name', 'email', 'height', 'gender', 'personal_page_url')
+    fields = ('username', 'first_name', 'last_name', 'email', 'height', 'gender', 'personal_page_url', 'is_active')
 
 
 admin.site.register(Diary, DiaryAdmin)

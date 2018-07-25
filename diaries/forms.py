@@ -34,8 +34,6 @@ class MyCustomUserForm(RegistrationForm):
             errors_on_separate_row=False)
 
 
-# TODO: Please design the extra user profile registration form.
-# TODO: The extra user profile data will include height, gender, personal page url.
 class ProfileForm(forms.Form):
     gender = forms.ChoiceField(label='性别', choices=[(0, '男'), (1, '女')])
     height = forms.FloatField(label="身高(cm)", min_value=0)
@@ -54,18 +52,15 @@ class ProfileForm(forms.Form):
             errors_on_separate_row=False)
 
 
-# TODO: Please design the login form.
 class LoginForm(forms.Form):
     username = forms.CharField(label='用户名', max_length=20)
     password = forms.CharField(label='密　码', max_length=20, widget=forms.PasswordInput())
 
 
-# TODO: Please design a date selection widget which might be a child class of forms.DateInput
 class DateWidget(forms.DateInput):
     input_type = 'date'
 
 
-# TODO: Please design the diary addition form, which should include budget, weight, note, date
 class NewDiaryForm(forms.ModelForm):
     class Meta:
         model = Diary

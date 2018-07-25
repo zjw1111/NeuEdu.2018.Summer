@@ -19,10 +19,7 @@ from diaries.views import *
 from registration.backends.hmac.views import RegistrationView
 
 urlpatterns = [
-    # TODO: Please add captcha,registration back end here.
     url(r'^admin/', include(admin.site.urls)),
-    # TODO: Use this way will increase an additional param <'index' or ''>
-    # url(r'^(index|)$', index),
     url(r'^index$', index),
     url(r'^$', index),
     url(r'^login$', login),

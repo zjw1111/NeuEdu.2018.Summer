@@ -11,14 +11,30 @@
 {% block details %}
 {% load staticfiles %}
 <div class="container">
+    <div class='row'>
+        <div class='col-md-12'>
+            <div class='panel panel-default'>
+                <div class='panel-heading' align=center>
+                    <h3>写一篇新的日记</h3>
+                </div>
+            </div>
+        </div>
+    </div>
     {% for msg in messages %}
     <div class="alert alert-{{msg.tags}}">{{ msg }}</div>
     {% endfor %}
-    <form name='postdiary' action='/post' method="post">
-        {% csrf_token %}
-        {{ diary_form.as_p }}
-        <input type="hidden" name="user" value="{{ user }}"/>
-        <input type="submit" value="提交" name="_submit"/>
-    </form>
+    <div class="row">
+        <div class="col-md-6">
+            <form name='postdiary' action='/post' method="post">
+                <table class="table table-hover">
+                    {{ diary_form.as_table }}
+                    {% csrf_token %}
+                    <input type="hidden" name="user" value="{{ user }}"/>
+                    <td><input class="btn btn-primary" type="submit" value="提交"/></td>
+                    <td></td>
+                </table>
+            </form>
+        </div>
+    </div>
 </div>
 {% endblock %}

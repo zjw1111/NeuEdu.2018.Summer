@@ -43,16 +43,12 @@ def userinfo(request):
             user.height = profile_form.cleaned_data['height']
             user.personal_page_url = profile_form.cleaned_data['personal_page_url']
             user.save()
+            messages.add_message(request, messages.SUCCESS, '个人资料修改成功')
             return HttpResponseRedirect('/userinfo')
         else:
             messages.add_message(request, messages.WARNING, '请检查您刚才输入的信息')
     html = template.render(locals(), request)
     return HttpResponse(html)
-    #should check the authenticaiton status first,
-    #if already login then use the username query the profile data.
-    #if the form submit, check the validity of form data, if valid, save data and show success information.
-    #if not, show error message.Please use the message mechanism.
-    #if current access is the first time show page, then display the userinfo form.
 
 
 def login(request):
@@ -105,6 +101,7 @@ def posting(request):
     if request.method == 'GET':
         diary_form = NewDiaryForm()
         user = request.user.id
+        username = request.user.username
     else:
         diary_form = NewDiaryForm(request.POST)
         if diary_form.is_valid():

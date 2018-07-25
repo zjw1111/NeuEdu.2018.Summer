@@ -13,9 +13,6 @@
 {% block details %}
 {% load staticfiles %}
 <div class="container">
-    {% for msg in messages %}
-    <div class="alert alert-{{msg.tags}}">{{ msg }}</div>
-    {% endfor %}
     <div class='row'>
         <div class='col-md-12'>
             <div class='panel panel-default'>
@@ -25,6 +22,9 @@
             </div>
         </div>
     </div>
+    {% for msg in messages %}
+    <div class="alert alert-{{msg.tags}}">{{ msg }}</div>
+    {% endfor %}
     <div class="row">
         <div class="col-md-6">
             <form action='/userinfo' method="post">

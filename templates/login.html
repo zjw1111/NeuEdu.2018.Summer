@@ -20,14 +20,19 @@
             </div>
         </div>
     </div>
-    {% if not username %}
-    <form name='login' action='/login' method='POST'>
-        {% csrf_token %}
-        {{ loginform.as_p }}
-        <input type="hidden" name="next" value="{{ next }}"/>
-        <input type="submit" value="登录" name="_Login"/>
-    </form>
-    {% endif %}
+    <div class="row">
+        <div class="col-md-6">
+            <form name='login' action='/login' method='POST'>
+                <table class="table table-hover">
+                    {{ loginform.as_table }}
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ next }}"/>
+                    <td><input class="btn btn-primary" type="submit" value="登录"/></td>
+                    <td></td>
+                </table>
+            </form>
+        </div>
+    </div>
     {% for msg in messages %}
     <div class="alert alert-{{msg.tags}}" style="margin-top: 20px;">{{ msg }}</div>
     {% endfor %}

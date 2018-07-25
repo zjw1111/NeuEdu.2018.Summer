@@ -1,10 +1,5 @@
 from django.contrib import admin
 from models import *
-#TODO: Please add your data model here.
-
-#TODO: Please create a admin display configuration class here.
-
-#TODO: Please register your data models
 
 
 class DiaryAdmin(admin.ModelAdmin):

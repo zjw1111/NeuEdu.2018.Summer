@@ -12,18 +12,30 @@
     {% for message in messages %}
     <div class='alert alert-{{message.tags}}'>{{ message }}</div>
     {% endfor %}
+
     <div class='row'>
         <div class='col-md-12'>
             <div class='panel panel-default'>
                 <div class='panel-heading' align=center>
                     <h3>注册您的账号</h3></div>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <p><b>带*项为必填项</b></p>
             <form action='.' method='POST'>
-                {% csrf_token %}
-                <table>{{ form.as_table }}</table>
-                <input type='submit' value='注册'><br/>
+                <table class="table table-hover">
+                    {{ form.as_table }}
+                    {% csrf_token %}
+                    <td><input class="btn btn-primary" type="submit" value="注册"/></td>
+                    <td></td>
+                </table>
             </form>
         </div>
     </div>
 </div>
+<style type="text/css">
+    .errorlist {color: red;}
+</style>
 {% endblock %}
